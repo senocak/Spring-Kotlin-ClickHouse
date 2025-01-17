@@ -1,0 +1,42 @@
+server:
+  port: ${SERVER_PORT:8082}
+spring:
+  application:
+    name: Spring Kotlin ClickHouse
+  datasource:
+    host: ${CLICKHOUSE_HOST:localhost}
+    port: ${CLICKHOUSE_PORT:8123}
+    username: ${CLICKHOUSE_USERNAME:anil}
+    password: ${CLICKHOUSE_PASSWORD:senocak}
+    db: ${CLICKHOUSE_DB:default}
+    ddl: populate
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+  threads:
+    virtual:
+      enabled: true
+  flyway:
+    enabled: false # FlywayException: Unsupported Database: ClickHouse 24.3
+    failOnMissingLocations: true
+    locations: classpath:migrations
+    default-schema: ${spring.datasource.db}
+    table: "flyway_migration_history"
+    sqlMigrationPrefix: "V"
+    sqlMigrationSeparator: "__"
+app:
+  jwtSecret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+  jwtExpirationInMs: '#{60 * 50 * 1000}' # 50 minutes in milliseconds
+springdoc:
+  api-docs:
+    path: /api/v1/swagger
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+        data:
+          couchbase: debug

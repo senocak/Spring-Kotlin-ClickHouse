@@ -1,0 +1,28 @@
+### Ping
+GET http://localhost:8082/api/v1/public
+
+### Get Enums
+GET http://localhost:8082/api/v1/public/enums
+
+### Login
+POST http://localhost:8082/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "anil1@senocak.com",
+  "password": "asenocak"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        const jsonResponse = JSON.parse(JSON.stringify(response.body));
+        const token = jsonResponse.token;
+        client.global.set("authToken", token);
+    });
+%}
+
+### Get me
+GET http://localhost:8082/api/v1/user/me
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
