@@ -38,5 +38,3 @@ logging:
     org:
       springframework:
         security: debug
-        data:
-          couchbase: debug
